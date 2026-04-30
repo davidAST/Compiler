@@ -1,0 +1,30 @@
+Program (Semantic Rule)
+    (01)    int fieldBytesSum = 0;
+            for (Definition def : program.getDefinitions()) {
+                if (def instanceof VarDefinition varDef) {
+                    varDef.setOffset(fieldBytesSum);
+                    fieldBytesSum += def.getType().numberOfBytes();
+                    }
+                }
+            }
+
+Definitions (Semantic Rule)
+    (01)    int fieldBytesSum = 4;
+                for (VarDefinition varDef : funcDef.getDefinitions()) {
+                    varDef.setOffset(fieldBytesSum);
+                    fieldBytesSum += varDef.getType().numberOfBytes();
+                }
+
+Types (Semantic Rule)
+
+    (05)    int fieldBytesSum = 0
+            for (RecordField rf : recordField+) {
+                rf.offset = fieldBytesSum;
+                fieldBytesSum += rf.getType.numberOfBytes()
+            }
+    (07)    int fieldBytesSum = 0;
+            for (int count = ft.getParams().size(); count >= 0; count--) {
+                VarDefinition varDef = ft.getParams().get(count);
+                fieldBytesSum += varDef.getType().numberOfBytes();
+                varDef.setOffset(-fieldBytesSum);
+            }

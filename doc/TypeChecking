@@ -1,0 +1,30 @@
+Definitions (Semantic Rules)
+
+    (01) statement*.forEach(statement -> statement.returnType = type.returnType)
+
+Expressions (Semantic Rules)
+
+    (01)    expression1.type = expression2.type.squareBrackets(expression3.type)
+    (02)    expression1.type = expression2.type.dot(ID)
+    (03)    expression1.type = expression2.type.canBeCastTo(type)
+    (04)    expression1.type = expression2.type.arithmetic()
+    (05)    expression1.type = expression2.type.logic()
+    (06)    expression1.type = expression2.type.arithmetic(expression3.type)
+    (07)    expression1.type = expression2.type.comparison(expression3.type)
+    (08)    expression1.type = expression2.type.logic(expression3.type)
+    (09)    expression1.type = expression2.type.parenthesis(expression*.map(e->e.type))
+    (10)    expression1.type = expression2.type.modulus(expression3.type)
+    (11)    expression1.type = IntType
+    (12)    expression1.type = RealType
+    (13)    expression1.type = CharType
+    (14)    expression1.type = expression1.definition == null ? new ErrorType("Variable" + ID "was not previously defined"); expression.definition.type
+
+Statements (Semantic Rules)
+    (01)    expression.type.mustBeBuiltIn()
+    (02)    expression.type.mustBeBuiltIn()
+    (03)    expression2.type.mustPromoteTo(expression1.type)
+    (04)    expression.type.mustBeLogical()
+    (05)    expression.type.mustBeLogical()
+    (06)    expression.type.mustPromoteTo(statement.returnType)
+    (07)    expression.type.parenthesis(expression*.map(e->e.type))
+

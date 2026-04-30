@@ -1,0 +1,41 @@
+Program (Abstract Grammar)
+    (01) Program:           astNode         -> definition*
+
+Definitions (Abstract Grammar)
+    (01) FuncDefinition:    definition      -> type ID definition* statement*
+    (02) VarDefinition:     definition      -> ID type
+
+Expressions (Abstract Grammar)
+
+    (01)    ArrayAccess:    expression1     -> expression2 expression3
+    (02)    FieldAccess:    expression1     -> expression2 ID
+    (03)    Cast:           expression1     -> type expression2
+    (04)    UnaryMinus:     expression1     -> expression2
+    (05)    Negation:       expression1     -> expression2
+    (06)    Arithmetic:     expression1     -> expression2 (+|-|*|/) expression3
+    (07)    Comparison:     expression1     -> expression2 (>|>=|<|<=|!=|==) expression3
+    (08)    Logical:        expression1     -> expression2 (&& | ||) expression3
+    (09)    FuncInvocation: expression1     -> expression2 expression*
+    (10)    Modulus:        expression1     -> expression2 expression3
+    (11)    Int:            expression1     -> INT_CONSTANT
+    (12)    Real:           expression1     -> REAL_CONSTANT
+    (13)    Char:           expression1     -> CHAR_CONSTANT
+    (14)    Variable:       expression1     -> ID
+
+Statements (Abstract Grammar)
+    (01)    Print:          statement       -> expression
+    (02)    Read:           statement       -> expression
+    (03)    Assignment:     statement       -> expression1 expression2
+    (04)    IfElse:         statement       -> expression statement2* statement3*
+    (05)    While:          statement       -> expression statement*
+    (06)    Return:         statement       -> expression
+    (07)    FuncInvocation: statement       -> expression expression*
+
+Types (Abstract Grammar)
+    (01)    CharType:       type            ->
+    (02)    IntType:        type            ->
+    (03)    RealType:       type            ->
+    (04)    ArrayType:      type1           -> INT_CONSTANT type2
+    (05)    StructType:     type1:          -> recordField+
+    (06)    RecordField:    astNode:        -> ID type
+    (07)    FunctionType:   type1:          -> type2 definition*
