@@ -1,3 +1,0 @@
-Generate code for:
-- Function invocations
-- Return statements
