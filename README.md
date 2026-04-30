@@ -1,5 +1,18 @@
 # P-- Compiler
 
+## Branches
+
+Each branch extends the base compiler with a new language feature. Some examples:
+
+| Branch | Feature |
+|---|---|
+| `master` | Base compiler |
+| `feature/increment` | `++` and `--` operators |
+| `feature/void-return` | `return;` to exit a void function |
+| ... | ... |
+
+Check the [branches page](https://github.com/davidAST/Compiler/branches) for the full list.
+
 A compiler for **P--** (P minus minus), a statically-typed imperative language inspired by C++ but designed for educational purposes. Built in Java using ANTLR4, it compiles P-- source code into MAPL assembly, which runs on the MAPL virtual machine.
 
 ## Language Overview
