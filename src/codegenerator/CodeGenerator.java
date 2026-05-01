@@ -109,7 +109,8 @@ public class CodeGenerator {
 
     // --- Debugging ---
     public void source() {
-        out.println("\n#source\t\"" + inputFile + "\"");
+        File file = new File(this.inputFile);
+        out.println("\n#source\t\"" + file.getName() + "\"");
         out.println();
     }
     public void line(int lineNum) {

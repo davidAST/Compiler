@@ -1,3 +1,6 @@
+@echo off
 cls
-cd %~dp0
-start .\mapl\GVM.exe output.txt
+
+cd /d "%~dp0inputs&outputs"
+
+start "" "%~dp0mapl\GVM.exe"

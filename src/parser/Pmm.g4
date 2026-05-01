@@ -152,7 +152,8 @@ expression returns [Expression ast]
 
 statement returns [ List<Statement> ast = new ArrayList<>() ]
         locals [ List<Statement> statements = new ArrayList<>(),
-                 List<Expression> expressions = new ArrayList<>()]
+                 List<Expression> expressions = new ArrayList<>(),
+                 Expression returnExpression = null ]
         // Print
         : 'print' exp=expression
             {$ast.add(new Print($exp.ast.getLine(), $exp.ast.getColumn(), $exp.ast));}
@@ -178,8 +179,8 @@ statement returns [ List<Statement> ast = new ArrayList<>() ]
         | 'while' exp=expression ':' b2=block
             {$ast.add(new While($exp.ast.getLine(), $exp.ast.getColumn(), $exp.ast, $b2.ast)); }
         // Return
-        | 'return' exp=expression ';'
-            {$ast.add(new Return($exp.ast.getLine(), $exp.ast.getColumn(), $exp.ast)); }
+        | RET='return' (exp=expression { $returnExpression = $exp.ast; })? ';'
+            { $ast.add(new Return($RET.line, $RET.getCharPositionInLine()+1, $returnExpression)); }
         // Function Invocation
         | ID '(' (exp1=expression {$expressions.add($exp1.ast); }
           (',' exp2=expression {$expressions.add($exp2.ast); } )*)? ')' ';'

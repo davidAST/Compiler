@@ -1,0 +1,13 @@
+def checkIndex(index:int)->None: {
+    if index < 5: {
+        print 0,'\n';
+        return;
+    }
+    print index,'\n';
+}
+
+def main()->None: {
+    value: int;
+    input value;
+    checkIndex(value);
+}

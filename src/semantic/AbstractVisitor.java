@@ -175,7 +175,9 @@ public abstract class AbstractVisitor<TP,TR> implements Visitor<TP,TR> {
 
     @Override
     public TR visit(Return returnStatement, TP parameter) {
-        returnStatement.getExpression().accept(this, parameter);
+        if (returnStatement.getExpression() != null) {
+            returnStatement.getExpression().accept(this, parameter);
+        }
         return null;
     }
 

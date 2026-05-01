@@ -1,4 +1,4 @@
-// Generated from C:/Users/david/Desktop/Uniovi/3º/2º Cuatrimestre/DLP/Laboratorios/Project/src/parser/Pmm.g4 by ANTLR 4.13.2
+// Generated from C:/Users/david/Desktop/Uniovi/3º/2º Cuatrimestre/DLP/Project/src/parser/Pmm.g4 by ANTLR 4.13.2
 package parser;
 
     import ast.*;
@@ -1093,7 +1093,7 @@ public class PmmParser extends Parser {
 		public List<Statement> ast = new ArrayList<>();
 		public List<Statement> statements = new ArrayList<>();
 		public List<Expression> expressions = new ArrayList<>();
-		public Expression expressionRet = null;
+		public Expression returnExpression = null;
 		public ExpressionContext exp;
 		public ExpressionContext exp2;
 		public ExpressionContext left;
@@ -1270,15 +1270,13 @@ public class PmmParser extends Parser {
 					{
 					setState(281);
 					((StatementContext)_localctx).exp = expression(0);
-					((StatementContext)_localctx).expressionRet =  ((StatementContext)_localctx).exp.ast;
+					 ((StatementContext)_localctx).returnExpression =  ((StatementContext)_localctx).exp.ast; 
 					}
 				}
 
 				setState(286);
 				match(T__2);
-
-				                        _localctx.ast.add(new Return((((StatementContext)_localctx).RET!=null?((StatementContext)_localctx).RET.getLine():0), ((StatementContext)_localctx).RET.getCharPositionInLine()+1, _localctx.expressionRet));
-				                    
+				 _localctx.ast.add(new Return((((StatementContext)_localctx).RET!=null?((StatementContext)_localctx).RET.getLine():0), ((StatementContext)_localctx).RET.getCharPositionInLine()+1, _localctx.returnExpression)); 
 				}
 				break;
 			case 8:

@@ -244,9 +244,12 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
          */
         cg.line(returnStatement.getLine());
         cg.comment("Return");
-        returnStatement.getExpression().accept(valueV, null);
         FunctionType fType = (FunctionType) funcDef.getType();
-        cg.convert(returnStatement.getExpression().getType(), fType.getReturnType());
+
+        if (returnStatement.getExpression() != null) {
+            returnStatement.getExpression().accept(valueV, null);
+            cg.convert(returnStatement.getExpression().getType(), fType.getReturnType());
+        }
 
         int bytesLocalSum = getBytesLocalSum(funcDef);
         int bytesParamSum = getBytesParamSum(fType);

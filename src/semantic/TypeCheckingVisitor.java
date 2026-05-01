@@ -202,10 +202,12 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
 
     @Override
     public Void visit(Return returnStatement, Type parameter) {
-        returnStatement.getExpression().accept(this, parameter);
-
-        returnStatement.getExpression().getType().mustPromoteTo(parameter,returnStatement);
-
+        if (returnStatement.getExpression() != null) {
+            returnStatement.getExpression().accept(this, parameter);
+            returnStatement.getExpression().getType().mustPromoteTo(parameter,returnStatement);
+        } else if (!(parameter instanceof VoidType)) {
+            new ErrorType("The function has no return type and expects: " + parameter.toString(), returnStatement);
+        }
         return null;
     }
 
