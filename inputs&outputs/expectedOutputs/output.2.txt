@@ -1,12 +1,12 @@
 
-#source	"input.txt"
+#source	"../input.2.txt"
 
-	' * IntType i (offset 0)
-	' * IntType n (offset 2)
-	' * IntType j (offset 4)
-	' * CharType c (offset 6)
-	' * RecordType[fields:[Field[name:integer,type:IntType offset:0], Field[name:character,type:CharType offset:2]]] pair (offset 7)
-	' * ArrayType[of:ArrayType[of:IntType,size:10],size:10] matrix (offset 10)
+	' * int i (offset 0)
+	' * int n (offset 2)
+	' * int j (offset 4)
+	' * char c (offset 6)
+	' * RecordType[fields:[Field[name:integer,type:int offset:0], Field[name:character,type:char offset:2]]] pair (offset 7)
+	' * ArrayType[of:ArrayType[of:int,size:10],size:10] matrix (offset 10)
 
 ' Invocation to the main function
 call main
@@ -25,11 +25,11 @@ halt
 
  f:
 	' * Parameters
-	' * RealType r (offset 6)
-	' * IntType e (offset 4)
+	' * real r (offset 6)
+	' * int e (offset 4)
 	' * Local variables
-	' * RealType real (offset -4)
-	' * CharType c (offset -5)
+	' * real real (offset -4)
+	' * char c (offset -5)
 	enter	5
 
 #line	17
@@ -42,13 +42,12 @@ halt
 	addi
 	loadb
 	b2i
-	i2f
 	pusha	7
 	pushi	0
 	addi
 	loadi
+	addi
 	i2f
-	addf
 	push	bp
 	pushi	6
 	addi
@@ -83,12 +82,12 @@ halt
 
  fill:
 	' * Parameters
-	' * IntType row (offset 8)
-	' * IntType value (offset 6)
-	' * IntType increment (offset 4)
+	' * int row (offset 8)
+	' * int value (offset 6)
+	' * int increment (offset 4)
 	' * Local variables
-	' * IntType i (offset -2)
-	' * IntType inc (offset -4)
+	' * int i (offset -2)
+	' * int inc (offset -4)
 	enter	4
 
 #line	26
@@ -188,9 +187,9 @@ halt
 
  show:
 	' * Parameters
-	' * IntType row (offset 4)
+	' * int row (offset 4)
 	' * Local variables
-	' * IntType i (offset -2)
+	' * int i (offset -2)
 	enter	2
 
 #line	37
@@ -302,7 +301,7 @@ halt
  main:
 	' * Parameters
 	' * Local variables
-	' * IntType i (offset -2)
+	' * int i (offset -2)
 	enter	2
 
 #line	49

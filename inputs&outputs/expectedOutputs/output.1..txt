@@ -1,5 +1,5 @@
 
-#source	"input.1.txt"
+#source	"../input.1.txt"
 
 	' * ArrayType[of:RealType,size:10] v (offset 0)
 
