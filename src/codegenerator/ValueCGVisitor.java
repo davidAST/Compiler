@@ -2,6 +2,7 @@ package codegenerator;
 import ast.expressions.*;
 import ast.expressions.literals.*;
 import ast.statements.FunctionInvocation;
+import ast.statements.Increment;
 import ast.types.FunctionType;
 
 import java.util.List;
@@ -297,6 +298,42 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
          */
         variable.accept(addressVisitor, param);
         cg.load(variable.getType().suffix());
+        return null;
+    }
+
+    @Override
+    public Void visit(Increment increment, Void parameter) {
+        /*
+         * value[[Increment: expression1 -> expression2]]() =
+         *      value[[expression2]]
+         *      address[[expression2]]
+         *      value[[expression2]]
+         *      pushi 1
+         *      switch (expression1.operator) {
+         *          case ("++"):
+         *              addi
+         *          case ("--"):
+         *              subi
+         *      }
+         *      storei
+         *
+         *
+         */
+        increment.getExpression().accept(this, parameter);
+        increment.getExpression().accept(addressVisitor, parameter);
+        increment.getExpression().accept(this, parameter);
+        cg.pushi(1);
+        switch (increment.getOperator()) {
+            case ("++"):
+                cg.add('i');
+                break;
+            case ("--"):
+                cg.sub('i');
+                break;
+            default:
+                throw new RuntimeException("Invalid increment operator " + increment.getOperator());
+        }
+        cg.store('i');
         return null;
     }
 }

@@ -116,6 +116,9 @@ expression returns [Expression ast]
           // Unary Minus
           | '-' exp=expression
             {$ast = new UnaryMinus($exp.ast.getLine(), $exp.ast.getColumn(), $exp.ast); }
+          // Increment
+          | exp=expression OP=('++'|'--')
+            {$ast = new Increment($exp.ast.getLine(), $exp.ast.getColumn(), $exp.ast, $OP.text); }
           // Negation
           | '!' exp=expression
             {$ast = new Negation($exp.ast.getLine(), $exp.ast.getColumn(), $exp.ast); }

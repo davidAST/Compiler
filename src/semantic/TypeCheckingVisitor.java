@@ -113,6 +113,20 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
         return null;
     }
 
+    @Override
+    public Void visit(Increment increment, Type parameter) {
+        increment.setLValue(false);
+        increment.getExpression().accept(this, parameter);
+
+        if (!increment.getExpression().getType().equals(IntType.getInstance())) {
+            increment.setType(new ErrorType("Incorrect type", increment));
+        }
+        else {
+            increment.setType(IntType.getInstance());
+        }
+        return null;
+    }
+
     // Expressions (Literals) ===============================================================
 
     @Override

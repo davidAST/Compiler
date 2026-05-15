@@ -1,0 +1,8 @@
+i: int;
+
+def main()->None: {
+	i = 1;
+    print i++,'\n';
+    print i--,'\n';
+    print i,'\n';
+}

@@ -113,6 +113,12 @@ public abstract class AbstractVisitor<TP,TR> implements Visitor<TP,TR> {
         return null;
     }
 
+    @Override
+    public TR visit(Increment increment, TP parameter) {
+        increment.getExpression().accept(this, parameter);
+        return null;
+    }
+
     // Expressions (Literals) ===============================================================
 
     @Override
