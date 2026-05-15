@@ -180,6 +180,9 @@ statement returns [ List<Statement> ast = new ArrayList<>() ]
         // While
         | 'while' exp=expression ':' b2=block
             {$ast.add(new While($exp.ast.getLine(), $exp.ast.getColumn(), $exp.ast, $b2.ast)); }
+        // Increment
+        | exp=expression OP=('++'|'--') ';'
+            {$ast.add(new Increment($exp.ast.getLine(), $exp.ast.getColumn(), $exp.ast, $OP.text)); }
         // Return
         | 'return' exp=expression ';'
             {$ast.add(new Return($exp.ast.getLine(), $exp.ast.getColumn(), $exp.ast)); }

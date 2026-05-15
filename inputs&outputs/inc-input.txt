@@ -3,6 +3,11 @@ i: int;
 def main()->None: {
 	i = 1;
     print i++,'\n';
-    print i--,'\n';
+
+    i = 5;
+    i--;
+    print i, '\n';
+
+    i++;
     print i,'\n';
 }

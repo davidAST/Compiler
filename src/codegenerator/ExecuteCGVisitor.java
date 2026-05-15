@@ -291,4 +291,36 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
         }
         return null;
     }
+
+    @Override
+    public Void visit(Increment increment, FuncDefinition parameter) {
+        /*
+         * execute[[Increment: expression1 -> expression2]]() =
+         *      address[[expression2]]
+         *      value[[expression2]]
+         *      pushi 1
+         *      switch (expression1.operator) {
+         *          case ("++"):
+         *              addi
+         *          case ("--"):
+         *              subi
+         *      }
+         *      storei
+         */
+        increment.getExpression().accept(addressV, null);
+        increment.getExpression().accept(valueV, null);
+        cg.pushi(1);
+        switch (increment.getOperator()) {
+            case ("++"):
+                cg.add('i');
+                break;
+            case ("--"):
+                cg.sub('i');
+                break;
+            default:
+                throw new RuntimeException("Invalid increment operator " + increment.getOperator());
+        }
+        cg.store('i');
+        return null;
+    }
 }

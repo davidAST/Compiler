@@ -7,7 +7,7 @@ import visitor.Visitor;
 
 import java.util.List;
 
-public class Increment extends AbstractExpression {
+public class Increment extends AbstractExpression implements Statement {
     public Expression expression;
     public String operator;
 
