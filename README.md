@@ -1,210 +1,152 @@
-# P-- Compiler
+# P-- Compiler — `feature/increment` branch
 
-## Branches
+> Extends the base compiler with support for the **`++` and `--` increment/decrement operators**.
 
-Each branch extends the base compiler with a new language feature. Some examples:
+## What this branch adds
 
-| Branch | Feature |
-|---|---|
-| `master` | Base compiler |
-| `feature/increment` | `++` and `--` operators |
-| `feature/void-return` | `return;` to exit a void function |
-| ... | ... |
+P-- variables of type `int` can now be incremented or decremented using the postfix `++` and `--` operators. These are shorthand for `i = i + 1` and `i = i - 1` respectively.
 
-Check the [branches page](https://github.com/davidAST/Compiler/branches) for the full list.
+When used inside an expression (e.g. inside `print`), `i++` and `i--` behave as **postfix**: they return the original value and then apply the increment/decrement.
 
-A compiler for **P--** (P minus minus), a statically-typed imperative language inspired by C++ but designed for educational purposes. Built in Java using ANTLR4, it compiles P-- source code into MAPL assembly, which runs on the MAPL virtual machine.
-
-## Language Overview
-
-P-- supports:
-- Primitive types: `int`, `double`, `char`
-- Composite types: arrays, structs
-- Control flow: `if/else`, `while`
-- Functions with parameters and return values
-- Type casting and arithmetic/logical expressions
-- `print` and `input` statements
-
-Example P-- program:
 ```
+i: int;
+
 def main()->None: {
-    i: int;
-    i = 0;
-    while i < 10: {
-        print i, '\n';
-        i = i + 1;
-    }
+    i = 1;
+    print i++, '\n';   # prints 1, then i becomes 2
+    i = 5;
+    i--;               # i becomes 4
+    print i, '\n';     # prints 4
+    i++;               # i becomes 5
+    print i, '\n';     # prints 5
 }
 ```
 
-## Project Structure
+## Language change
+
+| | Before | After |
+|---|---|---|
+| Increment variable | `i = i + 1` | ✅ `i++` |
+| Decrement variable | `i = i - 1` | ✅ `i--` |
+| Postfix in expression (e.g. `print i++`) | ❌ Not supported | ✅ Returns value before increment |
+| Applied to non-integer types | ❌ N/A | ❌ Type error |
+
+## MAPL output example
+
+Given:
 
 ```
-src/
-├── ast/
-│   ├── definitions/       # VarDefinition, FuncDefinition
-│   ├── expressions/       # Arithmetic, logical, access expressions
-│   ├── statements/        # Assignment, Print, Read, If, While, Return...
-│   └── types/             # IntType, CharType, RealType, ArrayType, StructType...
-├── codegenerator/
-│   ├── CodeGenerator.java         # Low-level MAPL instruction emitter
-│   ├── ExecuteCGVisitor.java      # Code generation for statements/definitions
-│   ├── ValueCGVisitor.java        # Code generation for expressions (by value)
-│   └── AddressCGVisitor.java      # Code generation for expressions (by address)
-├── semantic/
-│   ├── IdentificationVisitor.java # Symbol resolution
-│   └── TypeCheckingVisitor.java   # Type checking and inference
-├── parser/
-│   ├── Pmm.g4                     # ANTLR4 grammar
-│   └── ...                        # Generated lexer/parser
-└── symboltable/
-    └── SymbolTable.java
-test/
-inputs&outputs/                    # Sample programs and expected outputs
-mapl/                              # MAPL virtual machine
-```
+i: int;
 
-## Compilation Pipeline
-
-```
-Source (.pmm)
-     │
-     ▼
-  Lexer/Parser (ANTLR4)
-     │
-     ▼
-  AST Construction
-     │
-     ▼
-  Identification (symbol table)
-     │
-     ▼
-  Type Checking
-     │
-     ▼
-  Code Generation
-     │
-     ▼
-  MAPL Assembly (.mapl)
-     │
-     ▼
-  MAPL Virtual Machine → Output
-```
-
-## Requirements
-
-- Java 17+
-- ANTLR4 (included in `lib/`)
-- MAPL virtual machine (included in `mapl/`)
-
-## Running
-
-1. Compile the project in IntelliJ or with `javac`.
-2. Run the `Main` class passing the input source file and the output assembly file as arguments:
-
-```bash
-java Main <input.txt> <output.txt>
-```
-
-- `input.txt` — P-- source code
-- `output.txt` — generated MAPL assembly
-
-If there are semantic or type errors, they will be printed to stderr and no output file will be generated.
-
-3. Run the generated assembly with the MAPL virtual machine:
-
-```bash
-java -jar mapl/mapl.jar output.txt
-```
-
-Or use the provided `MAPL.cmd` script on Windows.
-
-## Target: MAPL Assembly
-
-The compiler targets MAPL, a stack-based virtual machine. Key instructions:
-
-| Instruction | Description |
-|---|---|
-| `push`, `pushi`, `pushf` | Push values onto the stack |
-| `loadi`, `storei` | Load/store integers |
-| `call`, `ret` | Function call/return |
-| `jmp`, `jz` | Unconditional/conditional jumps |
-| `outi`, `outf`, `outb` | Print int/double/char |
-| `enter` | Allocate local variable space |
-
-## Example
-
-Input program (`input.txt`):
-```
-v:[10]double;
-
-# Main program
 def main()->None: {
-    value:double;
-    i,j:int;
-    w:[4][5]int;
-    date:struct { 
-       day, month, year:int;     
-    };
-    
-    input date.day; 
-    date.year = 'a'; 
-    date.month = date.day*date.year%12+1;
-    print date.day, '\n', date.month, '\n', (double)(date.year), '\n';
-    
-    input value;
-       
-    i=0;   
-    while i<10: {
-       v[i]=value;
-       print i,':',v[i], ' ';
-       if i%2:
-          print 'o','d','d','\n';
-       else:
-          print 'e','v','e','n','\n';
-       i=i+1;
-    }
-    print '\n';
-
-    i=0;
-    while i<4: {
-       j=0;
-       while j<5: {
-          w[i][j]=i+j;
-          print w[i][j], ' ';
-          j=j+1;
-       }
-       print '\n';
-       i=i+1;
-    }
+    i = 1;
+    print i++, '\n';
+    i = 5;
+    i--;
+    print i, '\n';
+    i++;
+    print i, '\n';
 }
 ```
 
-Running the generated assembly on the MAPL VM:
+Generated assembly:
+
+```asm
+#source "inputs&outputs/inc-input.txt"
+    ' * IntType i (offset 0)
+' Invocation to the main function
+call main
+halt
+
+#line 3
+ main:
+    ' * Parameters
+    ' * Local variables
+    enter  0
+
+#line 4
+    ' * Assignment
+    pusha  0
+    pushi  1
+    storei
+
+#line 5
+    ' * Write (i++ as expression: push current value, then increment)
+    pusha  0
+    loadi
+    pusha  0
+    pusha  0
+    loadi
+    pushi  1
+    addi
+    storei
+    outi
+
+#line 5
+    ' * Write
+    pushb  10
+    outb
+
+#line 7
+    ' * Assignment
+    pusha  0
+    pushi  5
+    storei
+
+    ' * Decrement (i-- as statement)
+    pusha  0
+    pusha  0
+    loadi
+    pushi  1
+    subi
+    storei
+
+#line 9
+    ' * Write
+    pusha  0
+    loadi
+    outi
+
+#line 9
+    ' * Write
+    pushb  10
+    outb
+
+    ' * Increment (i++ as statement)
+    pusha  0
+    pusha  0
+    loadi
+    pushi  1
+    addi
+    storei
+
+#line 12
+    ' * Write
+    pusha  0
+    loadi
+    outi
+
+#line 12
+    ' * Write
+    pushb  10
+    outb
+    ret    0, 0, 0
 ```
->Integer value: 10
-10
-11
-97.0
 
->Float value: 20.0
-0:20.0 even
-1:20.0 odd
-2:20.0 even
-3:20.0 odd
-4:20.0 even
-5:20.0 odd
-6:20.0 even
-7:20.0 odd
-8:20.0 even
-9:20.0 odd
-
-0 1 2 3 4 
-1 2 3 4 5 
-2 3 4 5 6 
-3 4 5 6 7 
+Expected output:
+```
+1
+4
+5
 ```
 
-## License
+## Implementation notes
 
-MIT
+- `i++` and `i--` can be used both as **statements** and as **expressions** inside `print`.
+- When used as an expression (postfix), the original value is pushed onto the stack first, then the variable is updated in memory — so the printed value is the one before the increment/decrement.
+- Global variables are addressed with `pusha <offset>` instead of `push bp` + relative offset.
+- Type checking enforces that the operand is an `int` lvalue; applying `++`/`--` to a `double`, `char`, or non-variable expression is a type error.
+
+## Base
+
+Branched from `master`. See the [main README](../master/README.md) for the full project overview, pipeline, and MAPL instruction reference.
